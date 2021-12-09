@@ -4,6 +4,7 @@ import {
   reverseLinkedList,
   useInterval,
 } from '../lib/utils.js';
+import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 
 import './Board.css';
 
@@ -36,7 +37,7 @@ const Direction = {
   LEFT: 'LEFT',
 };
 
-const BOARD_ROW_SIZE = 22;
+const BOARD_ROW_SIZE = 16;
 const BOARD_COL_SIZE = 48;
 const PROBABILITY_OF_DIRECTION_REVERSAL_FOOD = 0.3;
 
@@ -55,7 +56,9 @@ const getStartingSnakeLLValue = board => {
 
 const Board = () => {
   const [score, setScore] = useState(0);
-  const [board, setBoard] = useState(createBoard(BOARD_ROW_SIZE,BOARD_COL_SIZE));
+  const [board, setBoard] = useState(
+    createBoard(BOARD_ROW_SIZE, BOARD_COL_SIZE),
+  );
   const [snake, setSnake] = useState(
     new LinkedList(getStartingSnakeLLValue(board)),
   );
@@ -64,10 +67,12 @@ const Board = () => {
   );
   // Naively set the starting food cell 5 cells away from the starting snake cell.
   const [foodCell, setFoodCell] = useState(snake.head.value.cell + 5);
-  const [direction, setDirection] = useState(Direction.RIGHT);
+  const [direction, setDirection] = useState(Direction.DOWN);
   // const [foodShouldReverseDirection, setFoodShouldReverseDirection] = useState(
   //   false,
   // );
+
+  const [shouldStart, setShouldStart] = useState(false);
 
   useEffect(() => {
     window.addEventListener('keydown', e => {
@@ -75,11 +80,18 @@ const Board = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   growSnake(snakeCells);
+  //   growSnake(snakeCells);
+  // }, []);
+
   // `useInterval` is needed; you can't naively do `setInterval` in the
   // `useEffect` above. See the article linked above the `useInterval`
   // definition for details.
   useInterval(() => {
-    moveSnake();
+    if (shouldStart) {
+      moveSnake();
+    }
   }, 200);
 
   const handleKeydown = e => {
@@ -94,6 +106,10 @@ const Board = () => {
     // is called. I leave it as an exercise to the viewer to fix this :P
     if (snakeWillRunIntoItself) return;
     setDirection(newDirection);
+  };
+
+  const onClick = () => {
+    setShouldStart(true);
   };
 
   const moveSnake = () => {
@@ -204,6 +220,16 @@ const Board = () => {
     <>
       {/* <h1>Score: {score}</h1> */}
       <div className="board">
+        <div className="score">{score}</div>
+        <div className="header">OOPS!</div>
+        <div className="iconStyle">
+          <PlayCircleFilledWhiteIcon
+            onClick={onClick}
+            className="icon"
+            fontSize="large"
+          />
+        </div>
+
         {board.map((row, rowIdx) => (
           <div key={rowIdx} className="row">
             {row.map((cellValue, cellIdx) => {
@@ -221,7 +247,7 @@ const Board = () => {
   );
 };
 
-const createBoard = (BOARD_ROW_SIZE,BOARD_COL_SIZE) => {
+const createBoard = (BOARD_ROW_SIZE, BOARD_COL_SIZE) => {
   let counter = 1;
   const board = [];
   for (let row = 0; row < BOARD_ROW_SIZE; row++) {
@@ -319,14 +345,10 @@ const getOppositeDirection = direction => {
   if (direction === Direction.LEFT) return Direction.RIGHT;
 };
 
-const getCellClassName = (
-  cellValue,
-  foodCell,
-  snakeCells,
-) => {
+const getCellClassName = (cellValue, foodCell, snakeCells) => {
   let className = 'cell';
   if (cellValue === foodCell) {
-      className = 'cell cell-red';
+    className = 'cell cell-red';
   }
   if (snakeCells.has(cellValue)) className = 'cell cell-green';
 

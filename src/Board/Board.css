@@ -1,12 +1,12 @@
 .board {
   /* outline: 2px solid rgb(134, 154, 189); */
-  padding:0rem;
+  padding: 0rem;
   margin: 0rem;
 }
 
 .row {
   height: 2rem;
-  padding:0rem;
+  padding: 0rem;
   margin: 0rem;
 }
 
@@ -14,20 +14,53 @@
   width: 2rem;
   height: 2rem;
   /* outline: 1px solid rgb(134, 154, 189); */
-  padding:0rem;
+  padding: 0rem;
   margin: 0rem;
   display: inline-block;
 }
 
 .cell-green {
   background-color: blue;
-  padding:0rem;
+  padding: 0rem;
   margin: 0rem;
 }
 
 .cell-red {
   background-color: red;
-  padding:0rem;
+  padding: 0rem;
   margin: 0rem;
 }
 
+.score {
+  color: black;
+  font-size: xx-large;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  /* margin-left: 47rem;
+  margin-top: 5rem;
+  margin-right: 40rem; */
+}
+
+.header {
+  color: blue;
+  font-size: 5rem;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.icon {
+  color: black;
+}
+
+.iconStyle {
+  size: 5rem;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
