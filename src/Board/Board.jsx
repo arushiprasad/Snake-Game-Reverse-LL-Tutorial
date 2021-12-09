@@ -36,7 +36,7 @@ const Direction = {
   LEFT: 'LEFT',
 };
 
-const BOARD_ROW_SIZE = 20;
+const BOARD_ROW_SIZE = 22;
 const BOARD_COL_SIZE = 48;
 const PROBABILITY_OF_DIRECTION_REVERSAL_FOOD = 0.3;
 
@@ -65,9 +65,9 @@ const Board = () => {
   // Naively set the starting food cell 5 cells away from the starting snake cell.
   const [foodCell, setFoodCell] = useState(snake.head.value.cell + 5);
   const [direction, setDirection] = useState(Direction.RIGHT);
-  const [foodShouldReverseDirection, setFoodShouldReverseDirection] = useState(
-    false,
-  );
+  // const [foodShouldReverseDirection, setFoodShouldReverseDirection] = useState(
+  //   false,
+  // );
 
   useEffect(() => {
     window.addEventListener('keydown', e => {
@@ -80,7 +80,7 @@ const Board = () => {
   // definition for details.
   useInterval(() => {
     moveSnake();
-  }, 150);
+  }, 200);
 
   const handleKeydown = e => {
     const newDirection = getDirectionFromKey(e.key);
@@ -133,7 +133,7 @@ const Board = () => {
     if (foodConsumed) {
       // This function mutates newSnakeCells.
       growSnake(newSnakeCells);
-      if (foodShouldReverseDirection) reverseSnake();
+      //if (foodShouldReverseDirection) reverseSnake();
       handleFoodConsumption(newSnakeCells);
     }
 
@@ -187,11 +187,7 @@ const Board = () => {
       break;
     }
 
-    const nextFoodShouldReverseDirection =
-      Math.random() < PROBABILITY_OF_DIRECTION_REVERSAL_FOOD;
-
     setFoodCell(nextFoodCell);
-    setFoodShouldReverseDirection(nextFoodShouldReverseDirection);
     setScore(score + 1);
   };
 
@@ -214,7 +210,6 @@ const Board = () => {
               const className = getCellClassName(
                 cellValue,
                 foodCell,
-                foodShouldReverseDirection,
                 snakeCells,
               );
               return <div key={cellIdx} className={className}></div>;
@@ -327,16 +322,11 @@ const getOppositeDirection = direction => {
 const getCellClassName = (
   cellValue,
   foodCell,
-  foodShouldReverseDirection,
   snakeCells,
 ) => {
   let className = 'cell';
   if (cellValue === foodCell) {
-    if (foodShouldReverseDirection) {
-      className = 'cell cell-purple';
-    } else {
       className = 'cell cell-red';
-    }
   }
   if (snakeCells.has(cellValue)) className = 'cell cell-green';
 
