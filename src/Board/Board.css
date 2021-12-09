@@ -1,5 +1,7 @@
 .board {
-  outline: 2px solid rgb(134, 154, 189);
+  /* outline: 2px solid rgb(134, 154, 189); */
+  padding:0rem;
+  margin: 0rem;
 }
 
 .row {
@@ -7,14 +9,18 @@
 }
 
 .cell {
-  width: 35px;
-  height: 35px;
-  outline: 1px solid rgb(134, 154, 189);
+  width: 2rem;
+  height: 2rem;
+  /* outline: 1px solid rgb(134, 154, 189); */
+  padding:0rem;
+  margin: 0rem;
   display: inline-block;
 }
 
 .cell-green {
   background-color: green;
+  padding:0rem;
+  margin: 0rem;
 }
 
 .cell-red {

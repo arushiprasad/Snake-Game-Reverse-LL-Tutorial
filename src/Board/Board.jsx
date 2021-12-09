@@ -36,7 +36,8 @@ const Direction = {
   LEFT: 'LEFT',
 };
 
-const BOARD_SIZE = 15;
+const BOARD_ROW_SIZE = 20;
+const BOARD_COL_SIZE = 48;
 const PROBABILITY_OF_DIRECTION_REVERSAL_FOOD = 0.3;
 
 const getStartingSnakeLLValue = board => {
@@ -54,7 +55,7 @@ const getStartingSnakeLLValue = board => {
 
 const Board = () => {
   const [score, setScore] = useState(0);
-  const [board, setBoard] = useState(createBoard(BOARD_SIZE));
+  const [board, setBoard] = useState(createBoard(BOARD_ROW_SIZE,BOARD_COL_SIZE));
   const [snake, setSnake] = useState(
     new LinkedList(getStartingSnakeLLValue(board)),
   );
@@ -173,7 +174,7 @@ const Board = () => {
   };
 
   const handleFoodConsumption = newSnakeCells => {
-    const maxPossibleCellValue = BOARD_SIZE * BOARD_SIZE;
+    const maxPossibleCellValue = BOARD_ROW_SIZE * BOARD_COL_SIZE;
     let nextFoodCell;
     // In practice, this will never be a time-consuming operation. Even
     // in the extreme scenario where a snake is so big that it takes up 90%
@@ -205,7 +206,7 @@ const Board = () => {
 
   return (
     <>
-      <h1>Score: {score}</h1>
+      {/* <h1>Score: {score}</h1> */}
       <div className="board">
         {board.map((row, rowIdx) => (
           <div key={rowIdx} className="row">
@@ -225,12 +226,12 @@ const Board = () => {
   );
 };
 
-const createBoard = BOARD_SIZE => {
+const createBoard = (BOARD_ROW_SIZE,BOARD_COL_SIZE) => {
   let counter = 1;
   const board = [];
-  for (let row = 0; row < BOARD_SIZE; row++) {
+  for (let row = 0; row < BOARD_ROW_SIZE; row++) {
     const currentRow = [];
-    for (let col = 0; col < BOARD_SIZE; col++) {
+    for (let col = 0; col < BOARD_COL_SIZE; col++) {
       currentRow.push(counter++);
     }
     board.push(currentRow);
