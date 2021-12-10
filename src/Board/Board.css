@@ -52,15 +52,20 @@
 
 .header {
   color: blue;
-  font-size: 5rem;
+  font-size: 12rem;
   font-weight: bolder;
   align-items: center;
   justify-content: center;
   display: flex;
 }
+.loadingPage {
+  text-align: center;
+  margin: 10rem;
+}
 
 .icon {
   color: black;
+  transform: scale(2);
 }
 
 .iconStyle {
