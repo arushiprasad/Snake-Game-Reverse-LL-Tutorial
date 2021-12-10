@@ -39,7 +39,6 @@ const Direction = {
 
 const BOARD_ROW_SIZE = 16;
 const BOARD_COL_SIZE = 48;
-const PROBABILITY_OF_DIRECTION_REVERSAL_FOOD = 0.3;
 
 const getStartingSnakeLLValue = board => {
   const rowSize = board.length;
