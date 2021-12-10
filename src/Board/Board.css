@@ -1,6 +1,6 @@
 .board {
   /* outline: 2px solid rgb(134, 154, 189); */
-  padding:0rem;
+  padding: 0rem;
   margin: 0rem;
 }
 
@@ -24,11 +24,10 @@
   padding: 0rem;
   margin: 0rem;
   /* position: absolute; */
-        /* top: 50%;
+  /* top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 150px 150px 0 0; */
-
 }
 
 .cell-red {
@@ -51,7 +50,7 @@
 }
 
 .header {
-  color: blue;
+  color: #186ade;
   font-size: 12rem;
   font-weight: bolder;
   align-items: center;
@@ -64,12 +63,12 @@
 }
 
 .icon {
-  color: black;
+  color: #186ade;
   transform: scale(2);
 }
 
 .errorMessage {
-  color: black;
+  color: #186ade;
   background-color: white;
   font-size: 1.5rem;
   margin: -5rem 23rem 1rem 22rem;
