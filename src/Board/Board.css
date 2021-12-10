@@ -37,6 +37,13 @@
   margin: 0rem;
 }
 
+.cell-white {
+  background-color: white;
+  padding: 0rem;
+  margin: 0rem;
+  color:black;
+}
+
 .score {
   color: black;
   font-size: xx-large;

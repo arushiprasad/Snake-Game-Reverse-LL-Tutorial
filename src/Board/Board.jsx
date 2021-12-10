@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   randomIntFromInterval,
-  reverseLinkedList,
   useInterval,
 } from '../lib/utils.js';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
@@ -43,9 +42,9 @@ const BOARD_COL_SIZE = 48;
 const getStartingSnakeLLValue = board => {
   const rowSize = board.length;
   const colSize = board[0].length;
-  const startingRow = Math.round(rowSize / 3);
-  const startingCol = Math.round(colSize / 3);
-  const startingCell = board[startingRow][startingCol];
+  const startingRow = 6;
+  const startingCol = 32;
+  const startingCell = 321;
   return {
     row: startingRow,
     col: startingCol,
@@ -175,19 +174,6 @@ const Board = () => {
     newSnakeCells.add(newTailCell);
   };
 
-  const reverseSnake = () => {
-    const tailNextNodeDirection = getNextNodeDirection(snake.tail, direction);
-    const newDirection = getOppositeDirection(tailNextNodeDirection);
-    setDirection(newDirection);
-
-    // The tail of the snake is really the head of the linked list, which
-    // is why we have to pass the snake's tail to `reverseLinkedList`.
-    reverseLinkedList(snake.tail);
-    const snakeHead = snake.head;
-    snake.head = snake.tail;
-    snake.tail = snakeHead;
-  };
-
   const handleFoodConsumption = newSnakeCells => {
     const maxPossibleCellValue = BOARD_ROW_SIZE * BOARD_COL_SIZE;
     let nextFoodCell;
@@ -213,7 +199,7 @@ const Board = () => {
     setFoodCell(snakeLLStartingValue.cell + 5);
     setSnakeCells(new Set([snakeLLStartingValue.cell]));
     setShouldStart(false);
-    setDirection(Direction.RIGHT);
+    setDirection(Direction.DOWN);
   };
 
   return (
@@ -243,7 +229,7 @@ const Board = () => {
                   foodCell,
                   snakeCells,
                 );
-                return <div key={cellIdx} className={className}></div>;
+                return <div key={cellIdx} className={className}>{cellValue}</div>;
               })}
             </div>
           ))}
@@ -355,7 +341,7 @@ const getCellClassName = (cellValue, foodCell, snakeCells) => {
   if (cellValue === foodCell) {
     className = 'cell cell-red';
   }
-  if (snakeCells.has(cellValue)) className = 'cell cell-green';
+  if (snakeCells.has(cellValue)) className = 'cell cell-green'; else className='cell cell-white'
 
   return className;
 };
