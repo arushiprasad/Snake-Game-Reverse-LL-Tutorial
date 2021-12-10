@@ -6,6 +6,14 @@ import {
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 
 import './Board.css';
+import { truncate } from 'fs';
+
+/**
+ * This has shitty naming so its hard to figure out whats happening. 
+ * whats been named as head is actually the tail/end of the linked list. 
+ * whenever we are moving the snake, we are creating a new node at the end of the linked list and adding that cell.
+ * While moving we need to remove the last node, whihc has been referred to as tail but is actually the head of the LL.
+ */
 
 /**
  * TODO: add a more elegant UX for before a game starts and after a game ends.
@@ -13,64 +21,63 @@ import './Board.css';
  * once a game is over, the board state should likely freeze until the user
  * intentionally restarts the game.
  */
-
-class LinkedListNode {
-  constructor(value) {
-    this.value = value;
-    this.next = null;
-  }
-}
-
-class LinkedList {
-  constructor(value) {
-    const node = new LinkedListNode(value);
-    this.head = node;
-    this.tail = node;
-  }
-}
-
-const Direction = {
-  UP: 'UP',
-  RIGHT: 'RIGHT',
-  DOWN: 'DOWN',
-  LEFT: 'LEFT',
+ enum Direction {
+  UP= 'UP',
+  RIGHT= 'RIGHT',
+  DOWN= 'DOWN',
+  LEFT= 'LEFT'
 };
+
+ interface Node {
+    value:Coords,
+    next:Node|null
+}
+
+interface Coords{
+  row:number,
+  col:number,
+  cell:number
+}
+
+interface LinkedList {
+    head:Node,
+    tail:Node
+}
 
 const BOARD_ROW_SIZE = 16;
 const BOARD_COL_SIZE = 48;
 
-const getStartingSnakeLLValue = board => {
-  const rowSize = board.length;
-  const colSize = board[0].length;
+const getStartingSnakeLLValue = ():LinkedList => {
   const startingRow = 6;
   const startingCol = 32;
   const startingCell = 321;
-  return {
+  const node:Coords= {
     row: startingRow,
     col: startingCol,
     cell: startingCell,
   };
+  return {head:{value:node,next:null},tail:{value:node,next:null}}  
 };
 
-const Board = () => {
+const Board: React.FC= () => {
   const [score, setScore] = useState(0);
   const [board, setBoard] = useState(
     createBoard(BOARD_ROW_SIZE, BOARD_COL_SIZE),
   );
-  const [snake, setSnake] = useState(
-    new LinkedList(getStartingSnakeLLValue(board)),
+
+  const [snake, setSnake] = useState<LinkedList>(
+    getStartingSnakeLLValue()
   );
   const [snakeCells, setSnakeCells] = useState(
     new Set([snake.head.value.cell]),
   );
-  // Naively set the starting food cell 5 cells away from the starting snake cell.
-  const [foodCell, setFoodCell] = useState(snake.head.value.cell + 5);
-  const [direction, setDirection] = useState(Direction.DOWN);
-  // const [foodShouldReverseDirection, setFoodShouldReverseDirection] = useState(
-  //   false,
-  // );
 
-  const [shouldStart, setShouldStart] = useState(false);
+  const [direction, setDirection] = useState(Direction.DOWN);
+
+  // Naively set the starting food cell 5 cells away from the starting snake cell.
+  const [foodCell, setFoodCell] = useState(snake.head.value.cell+5);
+
+  const [shouldStart, setShouldStart] = useState(true);
 
   useEffect(() => {
     window.addEventListener('keydown', e => {
@@ -78,10 +85,6 @@ const Board = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   growSnake(snakeCells);
-  //   growSnake(snakeCells);
-  // }, []);
 
   // `useInterval` is needed; you can't naively do `setInterval` in the
   // `useEffect` above. See the article linked above the `useInterval`
@@ -92,7 +95,7 @@ const Board = () => {
     }
   }, 200);
 
-  const handleKeydown = e => {
+  const handleKeydown = (e:KeyboardEvent) => {
     const newDirection = getDirectionFromKey(e.key);
     const isValidDirection = newDirection !== '';
     if (!isValidDirection) return;
@@ -111,12 +114,9 @@ const Board = () => {
   };
 
   const moveSnake = () => {
-    const currentHeadCoords = {
-      row: snake.head.value.row,
-      col: snake.head.value.col,
-    };
 
-    const nextHeadCoords = getCoordsInDirection(currentHeadCoords, direction);
+    const nextHeadCoords = getCoordsInDirection(snake.head.value, direction)!;
+
     if (isOutOfBounds(nextHeadCoords, board)) {
       handleGameOver();
       return;
@@ -127,20 +127,24 @@ const Board = () => {
       return;
     }
 
-    const newHead = new LinkedListNode({
+    //Create new node which would be appended to the end of the LL
+
+    const newNodeForLLEnd:Coords = {
       row: nextHeadCoords.row,
       col: nextHeadCoords.col,
       cell: nextHeadCell,
-    });
-    const currentHead = snake.head;
-    snake.head = newHead;
-    currentHead.next = newHead;
+    };
+    const currentEndNode = snake.head;
+    snake.head = {value:newNodeForLLEnd,next:null};
+    currentEndNode.next = {value:newNodeForLLEnd,next:null};
 
+
+    //remove tail of snake(head of ll) cell
     const newSnakeCells = new Set(snakeCells);
     newSnakeCells.delete(snake.tail.value.cell);
     newSnakeCells.add(nextHeadCell);
 
-    snake.tail = snake.tail.next;
+    snake.tail = snake.tail.next!;
     if (snake.tail === null) snake.tail = snake.head;
 
     const foodConsumed = nextHeadCell === foodCell;
@@ -154,27 +158,39 @@ const Board = () => {
     setSnakeCells(newSnakeCells);
   };
 
+  const getGrowthNodeCoords = () => {
+    const tailNextNodeDirection = getNextNodeDirection(
+      snake.tail,
+      direction,
+    );
+    const growthDirection = getOppositeDirection(tailNextNodeDirection);
+    const growthNodeCoords = getCoordsInDirection(
+      snake.tail.value,
+      growthDirection!!,
+    );
+    return growthNodeCoords;
+  };
   // This function mutates newSnakeCells.
-  const growSnake = newSnakeCells => {
-    const growthNodeCoords = getGrowthNodeCoords(snake.tail, direction);
+  const growSnake = (newSnakeCells:Set<number>) => {
+    const growthNodeCoords = getGrowthNodeCoords();
     if (isOutOfBounds(growthNodeCoords, board)) {
       // Snake is positioned such that it can't grow; don't do anything.
       return;
     }
-    const newTailCell = board[growthNodeCoords.row][growthNodeCoords.col];
-    const newTail = new LinkedListNode({
-      row: growthNodeCoords.row,
-      col: growthNodeCoords.col,
+    const newTailCell = board[growthNodeCoords!.row][growthNodeCoords!.col];
+    const newNodeForLLStart:Coords ={
+      row: growthNodeCoords!.row,
+      col: growthNodeCoords!.col,
       cell: newTailCell,
-    });
+    };
     const currentTail = snake.tail;
-    snake.tail = newTail;
+    snake.tail = {value:newNodeForLLStart,next:currentTail};
     snake.tail.next = currentTail;
 
     newSnakeCells.add(newTailCell);
   };
 
-  const handleFoodConsumption = newSnakeCells => {
+  const handleFoodConsumption = (newSnakeCells:Set<number>) => {
     const maxPossibleCellValue = BOARD_ROW_SIZE * BOARD_COL_SIZE;
     let nextFoodCell;
     // In practice, this will never be a time-consuming operation. Even
@@ -194,10 +210,10 @@ const Board = () => {
 
   const handleGameOver = () => {
     setScore(0);
-    const snakeLLStartingValue = getStartingSnakeLLValue(board);
-    setSnake(new LinkedList(snakeLLStartingValue));
-    setFoodCell(snakeLLStartingValue.cell + 5);
-    setSnakeCells(new Set([snakeLLStartingValue.cell]));
+    const snakeLLStartingValue = getStartingSnakeLLValue();
+    setSnake(snakeLLStartingValue);
+    setFoodCell(snakeLLStartingValue.head.value.cell + 5);
+    setSnakeCells(new Set([snakeLLStartingValue.head.value.cell]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
   };
@@ -212,7 +228,7 @@ const Board = () => {
             <div className="header">OOPS!</div>
             <div className="iconStyle">
               <PlayCircleFilledWhiteIcon
-                onClick={onClick}
+                //onClick={onClick}
                 className="icon"
                 fontSize="large"
               />
@@ -238,7 +254,7 @@ const Board = () => {
   );
 };
 
-const createBoard = (BOARD_ROW_SIZE, BOARD_COL_SIZE) => {
+const createBoard = (BOARD_ROW_SIZE:number, BOARD_COL_SIZE:number):number[][] => {
   let counter = 1;
   const board = [];
   for (let row = 0; row < BOARD_ROW_SIZE; row++) {
@@ -251,7 +267,7 @@ const createBoard = (BOARD_ROW_SIZE, BOARD_COL_SIZE) => {
   return board;
 };
 
-const getCoordsInDirection = (coords, direction) => {
+const getCoordsInDirection = (coords:Coords, direction:Direction) => {
   if (direction === Direction.UP) {
     return {
       row: coords.row - 1,
@@ -278,14 +294,14 @@ const getCoordsInDirection = (coords, direction) => {
   }
 };
 
-const isOutOfBounds = (coords, board) => {
+const isOutOfBounds = (coords:any, board:number[][]) => {
   const {row, col} = coords;
   if (row < 0 || col < 0) return true;
   if (row >= board.length || col >= board[0].length) return true;
   return false;
 };
 
-const getDirectionFromKey = key => {
+const getDirectionFromKey = (key:string) => {
   if (key === 'ArrowUp') return Direction.UP;
   if (key === 'ArrowRight') return Direction.RIGHT;
   if (key === 'ArrowDown') return Direction.DOWN;
@@ -293,7 +309,7 @@ const getDirectionFromKey = key => {
   return '';
 };
 
-const getNextNodeDirection = (node, currentDirection) => {
+const getNextNodeDirection = (node:Node, currentDirection:Direction) => {
   if (node.next === null) return currentDirection;
   const {row: currentRow, col: currentCol} = node.value;
   const {row: nextRow, col: nextCol} = node.next.value;
@@ -309,34 +325,19 @@ const getNextNodeDirection = (node, currentDirection) => {
   if (nextCol === currentCol && nextRow === currentRow - 1) {
     return Direction.UP;
   }
-  return '';
+  else throw Error;
 };
 
-const getGrowthNodeCoords = (snakeTail, currentDirection) => {
-  const tailNextNodeDirection = getNextNodeDirection(
-    snakeTail,
-    currentDirection,
-  );
-  const growthDirection = getOppositeDirection(tailNextNodeDirection);
-  const currentTailCoords = {
-    row: snakeTail.value.row,
-    col: snakeTail.value.col,
-  };
-  const growthNodeCoords = getCoordsInDirection(
-    currentTailCoords,
-    growthDirection,
-  );
-  return growthNodeCoords;
-};
 
-const getOppositeDirection = direction => {
+
+const getOppositeDirection = (direction:Direction) => {
   if (direction === Direction.UP) return Direction.DOWN;
   if (direction === Direction.RIGHT) return Direction.LEFT;
   if (direction === Direction.DOWN) return Direction.UP;
   if (direction === Direction.LEFT) return Direction.RIGHT;
 };
 
-const getCellClassName = (cellValue, foodCell, snakeCells) => {
+const getCellClassName = (cellValue:number, foodCell:number, snakeCells:Set<number>) => {
   let className = 'cell';
   if (cellValue === foodCell) {
     className = 'cell cell-red';
