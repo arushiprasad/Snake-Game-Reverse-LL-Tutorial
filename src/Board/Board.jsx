@@ -213,6 +213,7 @@ const Board = () => {
     setSnake(new LinkedList(snakeLLStartingValue));
     setFoodCell(snakeLLStartingValue.cell + 5);
     setSnakeCells(new Set([snakeLLStartingValue.cell]));
+    setShouldStart(false);
     setDirection(Direction.RIGHT);
   };
 
@@ -220,28 +221,33 @@ const Board = () => {
     <>
       {/* <h1>Score: {score}</h1> */}
       <div className="board">
-        <div className="score">{score}</div>
-        <div className="header">OOPS!</div>
-        <div className="iconStyle">
-          <PlayCircleFilledWhiteIcon
-            onClick={onClick}
-            className="icon"
-            fontSize="large"
-          />
-        </div>
-
-        {board.map((row, rowIdx) => (
-          <div key={rowIdx} className="row">
-            {row.map((cellValue, cellIdx) => {
-              const className = getCellClassName(
-                cellValue,
-                foodCell,
-                snakeCells,
-              );
-              return <div key={cellIdx} className={className}></div>;
-            })}
+        {shouldStart && <div className="score">{score}</div>}
+        {!shouldStart && (
+          <div className="loadingPage">
+            <div className="header">OOPS!</div>
+            <div className="iconStyle">
+              <PlayCircleFilledWhiteIcon
+                onClick={onClick}
+                className="icon"
+                fontSize="large"
+              />
+            </div>{' '}
           </div>
-        ))}
+        )}
+
+        {shouldStart &&
+          board.map((row, rowIdx) => (
+            <div key={rowIdx} className="row">
+              {row.map((cellValue, cellIdx) => {
+                const className = getCellClassName(
+                  cellValue,
+                  foodCell,
+                  snakeCells,
+                );
+                return <div key={cellIdx} className={className}></div>;
+              })}
+            </div>
+          ))}
       </div>
     </>
   );
