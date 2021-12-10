@@ -226,6 +226,7 @@ const Board: React.FC= () => {
         {!shouldStart && (
           <div className="loadingPage">
             <div className="header">OOPS!</div>
+            <div className="errorMessage">OUR SERVER IS ON A BREAK</div>
             <div className="iconStyle">
               <PlayCircleFilledWhiteIcon
                 //onClick={onClick}
