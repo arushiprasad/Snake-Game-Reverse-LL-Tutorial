@@ -1,5 +1,5 @@
 .board {
-  /* outline: 2px solid rgb(134, 154, 189); */
+  border: 2px solid rgb(134, 154, 189);
   padding: 0rem;
   margin: 0rem;
 }
@@ -40,7 +40,7 @@
   background-color: white;
   padding: 0rem;
   margin: 0rem;
-  color:black;
+  color: black;
 }
 
 .score {
@@ -50,10 +50,14 @@
   align-items: center;
   justify-content: center;
   display: flex;
+  margin-top: 1rem;
 
   /* margin-left: 47rem;
   margin-top: 5rem;
   margin-right: 40rem; */
+}
+.scoreButton {
+  cursor: none;
 }
 
 .header {

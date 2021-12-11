@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {randomIntFromInterval, useInterval} from '../lib/utils.js';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import ReplayIcon from '@mui/icons-material/Replay';
+import Button from '@mui/material/Button';
 
 import './Board.css';
 import {truncate} from 'fs';
@@ -48,31 +49,31 @@ const BOARD_COL_SIZE = 48;
 const getStartingSnakeLLValue = (): LinkedList => {
   const startingRow = 6;
   const startingCol = 32;
-  const head:Coords= {
+  const head: Coords = {
     row: startingRow,
     col: startingCol,
     cell: 321,
   };
-  const coord1:Coords= {
-    row: startingRow+1,
+  const coord1: Coords = {
+    row: startingRow + 1,
     col: startingCol,
     cell: 369,
   };
-  const coord2:Coords= {
-    row: startingRow+2,
+  const coord2: Coords = {
+    row: startingRow + 2,
     col: startingCol,
     cell: 417,
   };
-  const coord3:Coords= {
-    row: startingRow+3,
+  const coord3: Coords = {
+    row: startingRow + 3,
     col: startingCol,
     cell: 465,
   };
-  const node3:Node={value:coord3,next:null};
-  const node2:Node={value:coord2,next:node3};
-  const node1:Node={value:coord1,next:node2};
-  const headNode:Node={value:head,next:node1};
-  return {head:node3,tail:headNode}  
+  const node3: Node = {value: coord3, next: null};
+  const node2: Node = {value: coord2, next: node3};
+  const node1: Node = {value: coord1, next: node2};
+  const headNode: Node = {value: head, next: node1};
+  return {head: node3, tail: headNode};
 };
 
 const Board: React.FC = () => {
@@ -82,9 +83,7 @@ const Board: React.FC = () => {
   );
 
   const [snake, setSnake] = useState<LinkedList>(getStartingSnakeLLValue());
-  const [snakeCells, setSnakeCells] = useState(
-    new Set([321,369,417,465]),
-  );
+  const [snakeCells, setSnakeCells] = useState(new Set([321, 369, 417, 465]));
 
   const [direction, setDirection] = useState(Direction.DOWN);
 
@@ -113,8 +112,8 @@ const Board: React.FC = () => {
     const newDirection = getDirectionFromKey(e.key);
     console.log(direction);
     const isValidDirection = newDirection !== '';
-    const something = newDirection===''?Direction.UP:newDirection
-   // if (!isValidDirection) return;
+    const something = newDirection === '' ? Direction.UP : newDirection;
+    // if (!isValidDirection) return;
     const snakeWillRunIntoItself =
       getOppositeDirection(something) === direction && snakeCells.size > 1;
     // Note: this functionality is currently broken, for the same reason that
@@ -150,9 +149,8 @@ const Board: React.FC = () => {
       cell: nextHeadCell,
     };
     const currentEndNode = snake.head;
-    snake.head = {value:newNodeForLLEnd,next:null};
+    snake.head = {value: newNodeForLLEnd, next: null};
     currentEndNode.next = snake.head;
-
 
     //remove tail of snake(head of ll) cell
     const newSnakeCells = new Set(snakeCells);
@@ -235,7 +233,13 @@ const Board: React.FC = () => {
     <>
       {/* <h1>Score: {score}</h1> */}
       <div className="board">
-        {shouldStart && <div className="score">{score}</div>}
+        {shouldStart && (
+          <div className="score">
+            <Button variant="outlined" color="error" className="scoreButton">
+              {score}
+            </Button>
+          </div>
+        )}
         {!shouldStart && (
           <div className="loadingPage">
             <div className="header">OOPS!</div>
@@ -367,9 +371,9 @@ const getCellClassName = (
   let className = 'cell';
   if (cellValue === foodCell) {
     className = 'cell cell-red';
-  } else if(snakeCells.has(cellValue)){
-    className = 'cell cell-blue'
-  } else className='cell cell-white';
+  } else if (snakeCells.has(cellValue)) {
+    className = 'cell cell-blue';
+  } else className = 'cell cell-white';
 
   return className;
 };
