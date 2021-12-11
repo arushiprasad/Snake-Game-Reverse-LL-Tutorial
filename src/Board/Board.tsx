@@ -43,9 +43,12 @@ interface LinkedList {
   tail: Node;
 }
 
-const BOARD_ROW_SIZE = 21;
+const BOARD_ROW_SIZE = 20;
 const BOARD_COL_SIZE = 48;
-
+let oops=new Set([300, 301, 347, 395, 443, 491, 539,
+    302,351,399,447,495,543,590,588, 589,
+   353,401,449,497,545,305,306,355,403,451,499,547,594,593,357,405,453,501,549,597,310,311,360,408,455,454])
+const p=new Array([357,405,453,501,549,597,310,311,360,408,455,454]);
 const getStartingSnakeLLValue = (): LinkedList => {
   const startingRow = 6;
   const startingCol = 32;
@@ -104,7 +107,7 @@ const Board: React.FC = () => {
   // definition for details.
   useInterval(() => {
     if (shouldStart) {
-      moveSnake();
+      //moveSnake();
     }
   }, 200);
 
@@ -232,14 +235,15 @@ const Board: React.FC = () => {
   return (
     <>
       {/* <h1>Score: {score}</h1> */}
-      <div className="board">
-        {shouldStart && (
+      {shouldStart && (
           <div className="score">
             <Button variant="outlined" color="error" className="scoreButton">
               {score}
             </Button>
           </div>
         )}
+      <div className="board">
+        
         {!shouldStart && (
           <div className="loadingPage">
             <div className="header">OOPS!</div>
@@ -271,7 +275,7 @@ const Board: React.FC = () => {
                   foodCell,
                   snakeCells,
                 );
-                return <div key={cellIdx} className={className}></div>;
+                return <div key={cellIdx} className={className}>{cellValue}</div>;
               })}
             </div>
           ))}
@@ -373,7 +377,9 @@ const getCellClassName = (
     className = 'cell cell-red';
   } else if (snakeCells.has(cellValue)) {
     className = 'cell cell-blue';
-  } else className = 'cell cell-white';
+  } else if (oops.has(cellValue)){
+    className = 'cell cell-blue';
+  }else className = 'cell cell-white';
 
   return className;
 };
