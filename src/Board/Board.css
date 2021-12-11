@@ -32,6 +32,17 @@
         border-radius: 150px 150px 0 0; */
 }
 
+.cell-oops {
+  background-color: grey;
+  padding: 0rem;
+  margin: 0rem;
+  /* position: absolute; */
+  /* top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 150px 150px 0 0; */
+}
+
 .cell-red {
   background-color: red;
   padding: 0rem;

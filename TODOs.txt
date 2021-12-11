@@ -15,3 +15,10 @@ Snake Game TODOs
 - [x] Handle death
 - [x] Handle score
 - [ ] Handle game start and game reset <-------- TODO!
+
+- [] top banner
+- [] move oops by 1 cells
+- [] oops colour change before and during game
+- [] match louisa colours
+- [] remove current oops
+- [] tag suggestion

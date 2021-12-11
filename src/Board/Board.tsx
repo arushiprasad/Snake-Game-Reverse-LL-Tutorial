@@ -83,74 +83,60 @@ let oops = new Set([
   455,
   503,
   551,
-
   312,
   313,
-
-  362,
-  410,
   455,
   599,
   456,
-  457,
-  317,
   318,
   319,
-  364,
-  412,
-  461,
+  365,
+  413,
   462,
-  511,
-  559,
-  604,
-  605,
+  463,
   606,
+  607,
+  608,
   513,
   561,
-  657,
+  314,
+  363,411,458,457,320,464,557,369
 ]);
-const p = new Array([
-  357,
-  405,
-  453,
-  501,
-  549,
-  597,
-  310,
-  311,
-  360,
-  408,
-  455,
-  454,
-]);
+
 const getStartingSnakeLLValue = (): LinkedList => {
   const startingRow = 6;
-  const startingCol = 32;
+  const startingCol = 34;
   const head: Coords = {
     row: startingRow,
     col: startingCol,
-    cell: 321,
+    cell: 323,
   };
   const coord1: Coords = {
     row: startingRow + 1,
     col: startingCol,
-    cell: 369,
+    cell: 371,
   };
   const coord2: Coords = {
     row: startingRow + 2,
     col: startingCol,
-    cell: 417,
+    cell: 419,
   };
   const coord3: Coords = {
     row: startingRow + 3,
     col: startingCol,
-    cell: 465,
+    cell: 467,
   };
-  const node3: Node = {value: coord3, next: null};
+  const coord4: Coords = {
+    row: startingRow + 4,
+    col: startingCol,
+    cell: 515,
+  };
+  const node4:Node={value:coord4,next:null}
+  const node3: Node = {value: coord3, next: node4};
   const node2: Node = {value: coord2, next: node3};
   const node1: Node = {value: coord1, next: node2};
   const headNode: Node = {value: head, next: node1};
-  return {head: node3, tail: headNode};
+  return {head: node4, tail: headNode};
 };
 
 const Board: React.FC = () => {
@@ -160,12 +146,12 @@ const Board: React.FC = () => {
   );
 
   const [snake, setSnake] = useState<LinkedList>(getStartingSnakeLLValue());
-  const [snakeCells, setSnakeCells] = useState(new Set([321, 369, 417, 465]));
+  const [snakeCells, setSnakeCells] = useState(new Set([323, 371, 419, 467,515]));
 
   const [direction, setDirection] = useState(Direction.DOWN);
 
   // Naively set the starting food cell 5 cells away from the starting snake cell.
-  const [foodCell, setFoodCell] = useState(10);
+  const [foodCell, setFoodCell] = useState(611);
 
   const [shouldStart, setShouldStart] = useState(false);
   const [numberOfGames, setNumberOfGames] = useState(0);
@@ -181,7 +167,7 @@ const Board: React.FC = () => {
   // definition for details.
   useInterval(() => {
     if (shouldStart) {
-      //moveSnake();
+      moveSnake();
     }
   }, 200);
 
@@ -189,16 +175,15 @@ const Board: React.FC = () => {
     const newDirection = getDirectionFromKey(e.key);
     console.log(direction);
     const isValidDirection = newDirection !== '';
-    const something = newDirection === '' ? Direction.UP : newDirection;
-    // if (!isValidDirection) return;
+     if (!isValidDirection) return;
     const snakeWillRunIntoItself =
-      getOppositeDirection(something) === direction && snakeCells.size > 1;
+      getOppositeDirection(newDirection) === direction && snakeCells.size > 1;
     // Note: this functionality is currently broken, for the same reason that
     // `useInterval` is needed. Specifically, the `direction` and `snakeCells`
     // will currently never reflect their "latest version" when `handleKeydown`
     // is called. I leave it as an exercise to the viewer to fix this :P
     if (snakeWillRunIntoItself) return;
-    setDirection(something);
+    setDirection(newDirection);
   };
 
   const onClick = () => {
@@ -299,8 +284,8 @@ const Board: React.FC = () => {
     setScore(0);
     const snakeLLStartingValue = getStartingSnakeLLValue();
     setSnake(snakeLLStartingValue);
-    setFoodCell(10);
-    setSnakeCells(new Set([321, 369, 417, 465]));
+    setFoodCell(611);
+    setSnakeCells(new Set([323, 371, 419, 467,515]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
     setNumberOfGames(numberOfGames + 1);
@@ -350,7 +335,7 @@ const Board: React.FC = () => {
                 );
                 return (
                   <div key={cellIdx} className={className}>
-                    {cellValue}
+                
                   </div>
                 );
               })}
@@ -455,7 +440,9 @@ const getCellClassName = (
   } else if (snakeCells.has(cellValue)) {
     className = 'cell cell-blue';
   } else if (oops.has(cellValue)) {
-    className = 'cell cell-blue';
+    className = 'cell cell-oops';
+  // } else if(cellValue===foodOG){
+  //   className = 'cell cell-red';
   } else className = 'cell cell-white';
 
   return className;
