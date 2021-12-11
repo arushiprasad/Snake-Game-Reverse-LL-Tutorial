@@ -50,13 +50,31 @@ const BOARD_COL_SIZE = 48;
 const getStartingSnakeLLValue = ():LinkedList => {
   const startingRow = 6;
   const startingCol = 32;
-  const startingCell = 321;
-  const node:Coords= {
+  const head:Coords= {
     row: startingRow,
     col: startingCol,
-    cell: startingCell,
+    cell: 321,
   };
-  return {head:{value:node,next:null},tail:{value:node,next:null}}  
+  const coord1:Coords= {
+    row: startingRow+1,
+    col: startingCol,
+    cell: 369,
+  };
+  const coord2:Coords= {
+    row: startingRow+2,
+    col: startingCol,
+    cell: 417,
+  };
+  const coord3:Coords= {
+    row: startingRow+3,
+    col: startingCol,
+    cell: 465,
+  };
+  const node3:Node={value:coord3,next:null};
+  const node2:Node={value:coord2,next:node3};
+  const node1:Node={value:coord1,next:node2};
+  const headNode:Node={value:head,next:node1};
+  return {head:node3,tail:headNode}  
 };
 
 const Board: React.FC= () => {
@@ -69,13 +87,13 @@ const Board: React.FC= () => {
     getStartingSnakeLLValue()
   );
   const [snakeCells, setSnakeCells] = useState(
-    new Set([snake.head.value.cell]),
+    new Set([321,369,417,465]),
   );
 
   const [direction, setDirection] = useState(Direction.DOWN);
 
   // Naively set the starting food cell 5 cells away from the starting snake cell.
-  const [foodCell, setFoodCell] = useState(snake.head.value.cell+5);
+  const [foodCell, setFoodCell] = useState(10);
 
   const [shouldStart, setShouldStart] = useState(true);
 
@@ -83,7 +101,7 @@ const Board: React.FC= () => {
     window.addEventListener('keydown', e => {
       handleKeydown(e);
     });
-  }, []);
+  });
 
 
   // `useInterval` is needed; you can't naively do `setInterval` in the
@@ -97,16 +115,18 @@ const Board: React.FC= () => {
 
   const handleKeydown = (e:KeyboardEvent) => {
     const newDirection = getDirectionFromKey(e.key);
+    console.log(direction);
     const isValidDirection = newDirection !== '';
-    if (!isValidDirection) return;
+    const something = newDirection===''?Direction.UP:newDirection
+   // if (!isValidDirection) return;
     const snakeWillRunIntoItself =
-      getOppositeDirection(newDirection) === direction && snakeCells.size > 1;
+      getOppositeDirection(something) === direction && snakeCells.size > 1;
     // Note: this functionality is currently broken, for the same reason that
     // `useInterval` is needed. Specifically, the `direction` and `snakeCells`
     // will currently never reflect their "latest version" when `handleKeydown`
     // is called. I leave it as an exercise to the viewer to fix this :P
     if (snakeWillRunIntoItself) return;
-    setDirection(newDirection);
+    setDirection(something);
   };
 
   const onClick = () => {
@@ -136,7 +156,7 @@ const Board: React.FC= () => {
     };
     const currentEndNode = snake.head;
     snake.head = {value:newNodeForLLEnd,next:null};
-    currentEndNode.next = {value:newNodeForLLEnd,next:null};
+    currentEndNode.next = snake.head;
 
 
     //remove tail of snake(head of ll) cell
@@ -212,7 +232,7 @@ const Board: React.FC= () => {
     setScore(0);
     const snakeLLStartingValue = getStartingSnakeLLValue();
     setSnake(snakeLLStartingValue);
-    setFoodCell(snakeLLStartingValue.head.value.cell + 5);
+    setFoodCell(10);
     setSnakeCells(new Set([snakeLLStartingValue.head.value.cell]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
@@ -246,7 +266,7 @@ const Board: React.FC= () => {
                   foodCell,
                   snakeCells,
                 );
-                return <div key={cellIdx} className={className}>{cellValue}</div>;
+                return <div key={cellIdx} className={className}></div>;
               })}
             </div>
           ))}
@@ -342,10 +362,23 @@ const getCellClassName = (cellValue:number, foodCell:number, snakeCells:Set<numb
   let className = 'cell';
   if (cellValue === foodCell) {
     className = 'cell cell-red';
-  }
-  if (snakeCells.has(cellValue)) className = 'cell cell-green'; else className='cell cell-white'
+  } else if(snakeCells.has(cellValue)){
+    className = 'cell cell-blue'
+  } else className='cell cell-white';
 
   return className;
 };
+
+// const getCellClassName = (
+//   cellValue:number, foodCell:number, snakeCells:Set<number>
+// ) => {
+//   let className = 'cell';
+//   if (cellValue === foodCell) {
+//       className = 'cell cell-red';
+//   }
+//   if (snakeCells.has(cellValue)) className = 'cell cell-green';
+
+//   return className;
+// };
 
 export default Board;
