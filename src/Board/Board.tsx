@@ -43,7 +43,7 @@ interface LinkedList {
   tail: Node;
 }
 
-const BOARD_ROW_SIZE = 16;
+const BOARD_ROW_SIZE = 21;
 const BOARD_COL_SIZE = 48;
 
 const getStartingSnakeLLValue = (): LinkedList => {
@@ -223,7 +223,7 @@ const Board: React.FC = () => {
     const snakeLLStartingValue = getStartingSnakeLLValue();
     setSnake(snakeLLStartingValue);
     setFoodCell(10);
-    setSnakeCells(new Set([snakeLLStartingValue.head.value.cell]));
+    setSnakeCells(new Set([321,369,417,465]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
     setNumberOfGames(numberOfGames + 1);
