@@ -45,10 +45,69 @@ interface LinkedList {
 
 const BOARD_ROW_SIZE = 20;
 const BOARD_COL_SIZE = 48;
-let oops=new Set([300, 301, 347, 395, 443, 491, 539,
-    302,351,399,447,495,543,590,588, 589,
-   353,401,449,497,545,305,306,355,403,451,499,547,594,593,357,405,453,501,549,597,310,311,360,408,455,454])
-const p=new Array([357,405,453,501,549,597,310,311,360,408,455,454]);
+let oops = new Set([
+  300,
+  301,
+  347,
+  395,
+  443,
+  491,
+  539,
+  302,
+  351,
+  399,
+  447,
+  495,
+  543,
+  590,
+  588,
+  589,
+  353,
+  401,
+  449,
+  497,
+  545,
+  306,
+  307,
+  308,
+  357,
+  405,
+  453,
+  501,
+  549,
+  594,
+  595,
+  596,
+  359,
+  407,
+  455,
+  503,
+  551,
+
+  312,
+  313,
+
+  362,
+  410,
+  455,
+  599,
+  456,
+  457,
+]);
+const p = new Array([
+  357,
+  405,
+  453,
+  501,
+  549,
+  597,
+  310,
+  311,
+  360,
+  408,
+  455,
+  454,
+]);
 const getStartingSnakeLLValue = (): LinkedList => {
   const startingRow = 6;
   const startingCol = 32;
@@ -226,7 +285,7 @@ const Board: React.FC = () => {
     const snakeLLStartingValue = getStartingSnakeLLValue();
     setSnake(snakeLLStartingValue);
     setFoodCell(10);
-    setSnakeCells(new Set([321,369,417,465]));
+    setSnakeCells(new Set([321, 369, 417, 465]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
     setNumberOfGames(numberOfGames + 1);
@@ -236,14 +295,13 @@ const Board: React.FC = () => {
     <>
       {/* <h1>Score: {score}</h1> */}
       {shouldStart && (
-          <div className="score">
-            <Button variant="outlined" color="error" className="scoreButton">
-              {score}
-            </Button>
-          </div>
-        )}
+        <div className="score">
+          <Button variant="outlined" color="error" className="scoreButton">
+            {score}
+          </Button>
+        </div>
+      )}
       <div className="board">
-        
         {!shouldStart && (
           <div className="loadingPage">
             <div className="header">OOPS!</div>
@@ -275,7 +333,11 @@ const Board: React.FC = () => {
                   foodCell,
                   snakeCells,
                 );
-                return <div key={cellIdx} className={className}>{cellValue}</div>;
+                return (
+                  <div key={cellIdx} className={className}>
+                    {cellValue}
+                  </div>
+                );
               })}
             </div>
           ))}
@@ -377,9 +439,9 @@ const getCellClassName = (
     className = 'cell cell-red';
   } else if (snakeCells.has(cellValue)) {
     className = 'cell cell-blue';
-  } else if (oops.has(cellValue)){
+  } else if (oops.has(cellValue)) {
     className = 'cell cell-blue';
-  }else className = 'cell cell-white';
+  } else className = 'cell cell-white';
 
   return className;
 };
