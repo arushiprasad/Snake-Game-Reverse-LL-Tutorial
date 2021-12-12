@@ -14,11 +14,15 @@ Snake Game TODOs
 - [x] Handle food consumption
 - [x] Handle death
 - [x] Handle score
-- [ ] Handle game start and game reset <-------- TODO!
+- [X] Handle game start and game reset <-------- TODO!
 
-- [] top banner
-- [] move oops by 1 cells
-- [] oops colour change before and during game
-- [] match louisa colours
-- [] remove current oops
-- [] tag suggestion
+- [GS] top banner - thicker
+- [x] move oops by 1 cells
+- [x] oops colour change before and during game
+- [GS] match louisa colours - snake, oops, banner, food(green)
+- [x] remove current oops
+- [] tag suggestion (maybe not doing)
+
+- [GS]SCORE: 50/1000 - put in middle make it black
+
+-[AP] snake icon
