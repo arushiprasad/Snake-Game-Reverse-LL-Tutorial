@@ -114,31 +114,31 @@ let oops = new Set([
 
 const getStartingSnakeLLValue = (): LinkedList => {
   const startingRow = 6;
-  const startingCol = 34;
+  const startingCol = 36;
   const head: Coords = {
     row: startingRow,
     col: startingCol,
-    cell: 323,
+    cell: 325,
   };
   const coord1: Coords = {
     row: startingRow + 1,
     col: startingCol,
-    cell: 371,
+    cell: 373,
   };
   const coord2: Coords = {
     row: startingRow + 2,
     col: startingCol,
-    cell: 419,
+    cell: 421,
   };
   const coord3: Coords = {
     row: startingRow + 3,
     col: startingCol,
-    cell: 467,
+    cell: 469,
   };
   const coord4: Coords = {
     row: startingRow + 4,
     col: startingCol,
-    cell: 515,
+    cell: 517,
   };
   const node4: Node = {value: coord4, next: null};
   const node3: Node = {value: coord3, next: node4};
@@ -156,13 +156,13 @@ const Board: React.FC = () => {
 
   const [snake, setSnake] = useState<LinkedList>(getStartingSnakeLLValue());
   const [snakeCells, setSnakeCells] = useState(
-    new Set([323, 371, 419, 467, 515]),
+    new Set([325, 373, 421, 469, 517]),
   );
 
   const [direction, setDirection] = useState(Direction.DOWN);
 
   // Naively set the starting food cell 5 cells away from the starting snake cell.
-  const [foodCell, setFoodCell] = useState(611);
+  const [foodCell, setFoodCell] = useState(613);
 
   const [shouldStart, setShouldStart] = useState(false);
   const [numberOfGames, setNumberOfGames] = useState(0);
@@ -307,11 +307,11 @@ const Board: React.FC = () => {
       className = 'cell cell-red';
     } else if (snakeCells.has(cellValue)) {
       className = 'cell cell-blue';
-    } else if (oops.has(cellValue) && shouldStart) {
+    } else if (oops.has(cellValue-2) && shouldStart) { // -2 here for alignment
       className = 'cell cell-oops';
       // } else if(cellValue===foodOG){
       //   className = 'cell cell-red';
-    } else if (oops.has(cellValue) && !shouldStart) {
+    } else if (oops.has(cellValue-2) && !shouldStart) {// -2 here for alignment
       className = 'cell cell-oops-blue';
       // } else if(cellValue===foodOG){
       //   className = 'cell cell-red';
@@ -342,8 +342,8 @@ const Board: React.FC = () => {
     setScore(0);
     const snakeLLStartingValue = getStartingSnakeLLValue();
     setSnake(snakeLLStartingValue);
-    setFoodCell(611);
-    setSnakeCells(new Set([323, 371, 419, 467, 515]));
+    setFoodCell(613);
+    setSnakeCells(new Set([325, 373, 421, 469, 517]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
     setNumberOfGames(numberOfGames + 1);
