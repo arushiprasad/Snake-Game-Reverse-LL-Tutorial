@@ -3,6 +3,8 @@ import {randomIntFromInterval, useInterval} from '../lib/utils.js';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import ReplayIcon from '@mui/icons-material/Replay';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 import './Board.css';
 import {truncate} from 'fs';
@@ -100,7 +102,14 @@ let oops = new Set([
   513,
   561,
   314,
-  363,411,458,457,320,464,557,369
+  363,
+  411,
+  458,
+  457,
+  320,
+  464,
+  557,
+  369,
 ]);
 
 const getStartingSnakeLLValue = (): LinkedList => {
@@ -131,7 +140,7 @@ const getStartingSnakeLLValue = (): LinkedList => {
     col: startingCol,
     cell: 515,
   };
-  const node4:Node={value:coord4,next:null}
+  const node4: Node = {value: coord4, next: null};
   const node3: Node = {value: coord3, next: node4};
   const node2: Node = {value: coord2, next: node3};
   const node1: Node = {value: coord1, next: node2};
@@ -146,7 +155,9 @@ const Board: React.FC = () => {
   );
 
   const [snake, setSnake] = useState<LinkedList>(getStartingSnakeLLValue());
-  const [snakeCells, setSnakeCells] = useState(new Set([323, 371, 419, 467,515]));
+  const [snakeCells, setSnakeCells] = useState(
+    new Set([323, 371, 419, 467, 515]),
+  );
 
   const [direction, setDirection] = useState(Direction.DOWN);
 
@@ -162,6 +173,16 @@ const Board: React.FC = () => {
     });
   });
 
+  useEffect(() => {
+    window.addEventListener('keydown', e => {
+      handleInitialKeyChange(e);
+    });
+  });
+
+  useEffect(() => {
+    getBadge();
+  }, [score]);
+
   // `useInterval` is needed; you can't naively do `setInterval` in the
   // `useEffect` above. See the article linked above the `useInterval`
   // definition for details.
@@ -171,11 +192,15 @@ const Board: React.FC = () => {
     }
   }, 200);
 
+  const handleInitialKeyChange = (e: KeyboardEvent) => {
+    setShouldStart(true);
+  };
+
   const handleKeydown = (e: KeyboardEvent) => {
     const newDirection = getDirectionFromKey(e.key);
     console.log(direction);
     const isValidDirection = newDirection !== '';
-     if (!isValidDirection) return;
+    if (!isValidDirection) return;
     const snakeWillRunIntoItself =
       getOppositeDirection(newDirection) === direction && snakeCells.size > 1;
     // Note: this functionality is currently broken, for the same reason that
@@ -188,6 +213,16 @@ const Board: React.FC = () => {
 
   const onClick = () => {
     setShouldStart(true);
+  };
+
+  const getBadge = () => {
+    if (score <= 5) {
+      return 'Beginner';
+    } else if (score <= 10) {
+      return 'Mediocre';
+    } else {
+      return 'Pro';
+    }
   };
 
   const moveSnake = () => {
@@ -285,7 +320,7 @@ const Board: React.FC = () => {
     const snakeLLStartingValue = getStartingSnakeLLValue();
     setSnake(snakeLLStartingValue);
     setFoodCell(611);
-    setSnakeCells(new Set([323, 371, 419, 467,515]));
+    setSnakeCells(new Set([323, 371, 419, 467, 515]));
     setShouldStart(false);
     setDirection(Direction.DOWN);
     setNumberOfGames(numberOfGames + 1);
@@ -294,15 +329,33 @@ const Board: React.FC = () => {
   return (
     <>
       {/* <h1>Score: {score}</h1> */}
-      {shouldStart && (
+      {
         <div className="score">
           <Button variant="outlined" color="error" className="scoreButton">
             {score}
           </Button>
+          <div className="iconStyle">
+            {numberOfGames === 0 ? (
+              <PlayCircleFilledWhiteIcon
+                onClick={onClick}
+                className="icon"
+                fontSize="large"
+              />
+            ) : (
+              <ReplayIcon onClick={onClick} className="icon" fontSize="large" />
+            )}
+          </div>{' '}
+          <div className="badge">
+            <Chip
+              icon={<StarBorderIcon />}
+              label={getBadge()}
+              variant="outlined"
+            />
+          </div>
         </div>
-      )}
+      }
       <div className="board">
-        {!shouldStart && (
+        {/* {!shouldStart && (
           <div className="loadingPage">
             <div className="header">OOPS!</div>
             <div className="errorMessage">OUR SERVER IS ON A BREAK</div>
@@ -322,25 +375,20 @@ const Board: React.FC = () => {
               )}
             </div>{' '}
           </div>
-        )}
+        )} */}
 
-        {shouldStart &&
-          board.map((row, rowIdx) => (
-            <div key={rowIdx} className="row">
-              {row.map((cellValue, cellIdx) => {
-                const className = getCellClassName(
-                  cellValue,
-                  foodCell,
-                  snakeCells,
-                );
-                return (
-                  <div key={cellIdx} className={className}>
-                
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+        {board.map((row, rowIdx) => (
+          <div key={rowIdx} className="row">
+            {row.map((cellValue, cellIdx) => {
+              const className = getCellClassName(
+                cellValue,
+                foodCell,
+                snakeCells,
+              );
+              return <div key={cellIdx} className={className}></div>;
+            })}
+          </div>
+        ))}
       </div>
     </>
   );
@@ -441,8 +489,8 @@ const getCellClassName = (
     className = 'cell cell-blue';
   } else if (oops.has(cellValue)) {
     className = 'cell cell-oops';
-  // } else if(cellValue===foodOG){
-  //   className = 'cell cell-red';
+    // } else if(cellValue===foodOG){
+    //   className = 'cell cell-red';
   } else className = 'cell cell-white';
 
   return className;

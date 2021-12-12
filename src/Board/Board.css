@@ -2,7 +2,6 @@
   padding: 0rem;
   height: 100vh;
   width: 100vw;
-
 }
 
 .row {
@@ -73,6 +72,10 @@
   cursor: none;
 }
 
+.badge {
+  padding-left: 3rem;
+}
+
 .header {
   color: #186ade;
   font-size: 12rem;
@@ -87,8 +90,9 @@
 }
 
 .icon {
-  color: #186ade;
-  transform: scale(2);
+  color: black;
+  padding-left: 1rem;
+  transform: scale(1);
 }
 
 .errorMessage {
