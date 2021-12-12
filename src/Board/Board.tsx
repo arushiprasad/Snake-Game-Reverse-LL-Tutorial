@@ -307,11 +307,13 @@ const Board: React.FC = () => {
       className = 'cell cell-red';
     } else if (snakeCells.has(cellValue)) {
       className = 'cell cell-blue';
-    } else if (oops.has(cellValue-2) && shouldStart) { // -2 here for alignment
+    } else if (oops.has(cellValue - 2) && shouldStart) {
+      // -2 here for alignment
       className = 'cell cell-oops';
       // } else if(cellValue===foodOG){
       //   className = 'cell cell-red';
-    } else if (oops.has(cellValue-2) && !shouldStart) {// -2 here for alignment
+    } else if (oops.has(cellValue - 2) && !shouldStart) {
+      // -2 here for alignment
       className = 'cell cell-oops-blue';
       // } else if(cellValue===foodOG){
       //   className = 'cell cell-red';
@@ -335,7 +337,7 @@ const Board: React.FC = () => {
     }
 
     setFoodCell(nextFoodCell);
-    setScore(score + 1);
+    setScore(score + 10);
   };
 
   const handleGameOver = () => {
@@ -354,8 +356,11 @@ const Board: React.FC = () => {
       {/* <h1>Score: {score}</h1> */}
       {
         <div className="score">
-          <Button variant="outlined" color="error" className="scoreButton">
-            {score}
+          <Button
+            variant="outlined"
+            style={{color: 'black', borderColor: 'black', fontWeight: 'bold'}}
+            className="scoreButton">
+            {`SCORE: ${score}/ 100`}
           </Button>
           <div className="iconStyle">
             {numberOfGames === 0 ? (

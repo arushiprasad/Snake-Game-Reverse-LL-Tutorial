@@ -21,7 +21,7 @@
 }
 
 .cell-blue {
-  background-color: blue;
+  background-color: #186ade;
   padding: 0rem;
   margin: 0rem;
   /* position: absolute; */
@@ -43,7 +43,7 @@
 }
 
 .cell-oops-blue {
-  background-color: blue;
+  background-color: #186ade;
   padding: 0rem;
   margin: 0rem;
   /* position: absolute; */
@@ -54,7 +54,7 @@
 }
 
 .cell-red {
-  background-color: red;
+  background-color: #7cfc00;
   padding: 0rem;
   margin: 0rem;
 }
@@ -74,7 +74,8 @@
   justify-content: center;
   display: flex;
   margin-top: 1rem;
-  background-color: grey;
+  background-color: #186ade;
+  padding: 0.5rem 0rem;
 
   /* margin-left: 47rem;
   margin-top: 5rem;
@@ -82,6 +83,7 @@
 }
 .scoreButton {
   cursor: none;
+  color: black;
 }
 
 .badge {
