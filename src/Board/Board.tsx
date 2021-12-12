@@ -297,6 +297,29 @@ const Board: React.FC = () => {
     newSnakeCells.add(newTailCell);
   };
 
+  const getCellClassName = (
+    cellValue: number,
+    foodCell: number,
+    snakeCells: Set<number>,
+  ) => {
+    let className = 'cell';
+    if (cellValue === foodCell) {
+      className = 'cell cell-red';
+    } else if (snakeCells.has(cellValue)) {
+      className = 'cell cell-blue';
+    } else if (oops.has(cellValue) && shouldStart) {
+      className = 'cell cell-oops';
+      // } else if(cellValue===foodOG){
+      //   className = 'cell cell-red';
+    } else if (oops.has(cellValue) && !shouldStart) {
+      className = 'cell cell-oops-blue';
+      // } else if(cellValue===foodOG){
+      //   className = 'cell cell-red';
+    } else className = 'cell cell-white';
+
+    return className;
+  };
+
   const handleFoodConsumption = (newSnakeCells: Set<number>) => {
     const maxPossibleCellValue = BOARD_ROW_SIZE * BOARD_COL_SIZE;
     let nextFoodCell;
@@ -475,25 +498,6 @@ const getOppositeDirection = (direction: Direction) => {
   if (direction === Direction.RIGHT) return Direction.LEFT;
   if (direction === Direction.DOWN) return Direction.UP;
   if (direction === Direction.LEFT) return Direction.RIGHT;
-};
-
-const getCellClassName = (
-  cellValue: number,
-  foodCell: number,
-  snakeCells: Set<number>,
-) => {
-  let className = 'cell';
-  if (cellValue === foodCell) {
-    className = 'cell cell-red';
-  } else if (snakeCells.has(cellValue)) {
-    className = 'cell cell-blue';
-  } else if (oops.has(cellValue)) {
-    className = 'cell cell-oops';
-    // } else if(cellValue===foodOG){
-    //   className = 'cell cell-red';
-  } else className = 'cell cell-white';
-
-  return className;
 };
 
 export default Board;
