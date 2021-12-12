@@ -360,7 +360,7 @@ const Board: React.FC = () => {
             variant="outlined"
             style={{color: 'black', borderColor: 'black', fontWeight: 'bold'}}
             className="scoreButton">
-            {`SCORE: ${score}/ 100`}
+            {`SCORE: ${score} / 100`}
           </Button>
           <div className="iconStyle">
             {numberOfGames === 0 ? (
