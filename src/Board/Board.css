@@ -73,7 +73,8 @@
 }
 
 .badge {
-  padding-left: 3rem;
+  padding-left: 2rem;
+  margin-top: -0.5rem;
 }
 
 .header {
