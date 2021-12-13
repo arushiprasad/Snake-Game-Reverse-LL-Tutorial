@@ -369,8 +369,9 @@ const Board: React.FC = () => {
             style={{
               color: 'black',
               borderColor: 'black',
-              fontWeight: 'bold',
+              fontWeight: 'bolder',
               fontSize: '1rem',
+              fontFamily: 'Orbitron, sans-serif',
             }}
             className="scoreButton">
             {`SCORE: ${score} / 1000`}
