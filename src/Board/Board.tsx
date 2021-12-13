@@ -216,9 +216,9 @@ const Board: React.FC = () => {
   };
 
   const getBadge = () => {
-    if (score <= 5) {
+    if (score <= 50) {
       return 'Beginner';
-    } else if (score <= 10) {
+    } else if (score <= 200) {
       return 'Mediocre';
     } else {
       return 'Pro';
@@ -367,7 +367,7 @@ const Board: React.FC = () => {
             variant="outlined"
             style={{color: 'black', borderColor: 'black', fontWeight: 'bold'}}
             className="scoreButton">
-            {`SCORE: ${score} / 100`}
+            {`SCORE: ${score} / 1000`}
           </Button>
           <div className="iconStyle">
             {numberOfGames === 0 ? (
