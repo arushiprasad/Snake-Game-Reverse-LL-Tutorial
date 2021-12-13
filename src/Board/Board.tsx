@@ -7,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import {ReactComponent as SnakeIcon} from './Snake.svg';
 
 import './Board.css';
 import {truncate} from 'fs';
@@ -376,6 +377,7 @@ const Board: React.FC = () => {
             className="scoreButton">
             {`SCORE: ${score} / 1000`}
           </Button>
+          {score > 50 ? <SnakeIcon /> : undefined}
           <div className="iconStyle">
             {numberOfGames === 0 ? (
               <PlayCircleFilledWhiteIcon
