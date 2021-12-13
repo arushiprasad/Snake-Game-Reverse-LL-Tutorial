@@ -379,15 +379,15 @@ const Board: React.FC = () => {
           </Button>
           {score > 50 ? <SnakeIcon /> : undefined}
           <div className="iconStyle">
-            {numberOfGames === 0 ? (
+            {numberOfGames === 0 && !shouldStart ? (
               <PlayCircleFilledWhiteIcon
                 onClick={onClick}
                 className="icon"
                 fontSize="large"
               />
-            ) : (
+            ) : numberOfGames !== 0 && !shouldStart ? (
               <ReplayIcon onClick={onClick} className="icon" fontSize="large" />
-            )}
+            ) : undefined}
           </div>{' '}
         </div>
       }
