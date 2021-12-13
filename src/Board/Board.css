@@ -87,7 +87,7 @@
 }
 
 .badge {
-  padding-left: 2rem;
+  padding-right: 2rem;
   margin-top: -0.5rem;
 }
 
@@ -125,7 +125,8 @@
 .iconStyle {
   size: 5rem;
   font-weight: bolder;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   display: flex;
+  float: right;
 }

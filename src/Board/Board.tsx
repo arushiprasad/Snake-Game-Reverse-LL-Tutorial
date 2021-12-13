@@ -356,6 +356,13 @@ const Board: React.FC = () => {
       {/* <h1>Score: {score}</h1> */}
       {
         <div className="score">
+          <div className="badge">
+            <Chip
+              icon={<StarBorderIcon />}
+              label={getBadge()}
+              variant="outlined"
+            />
+          </div>
           <Button
             variant="outlined"
             style={{color: 'black', borderColor: 'black', fontWeight: 'bold'}}
@@ -373,13 +380,6 @@ const Board: React.FC = () => {
               <ReplayIcon onClick={onClick} className="icon" fontSize="large" />
             )}
           </div>{' '}
-          <div className="badge">
-            <Chip
-              icon={<StarBorderIcon />}
-              label={getBadge()}
-              variant="outlined"
-            />
-          </div>
         </div>
       }
       <div className="board">
