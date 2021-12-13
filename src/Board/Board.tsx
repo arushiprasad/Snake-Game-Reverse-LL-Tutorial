@@ -358,13 +358,13 @@ const Board: React.FC = () => {
       {/* <h1>Score: {score}</h1> */}
       {
         <div className="score">
-          <div className="badge">
+          {/* <div className="badge">
             <Chip
               icon={<StarBorderIcon />}
               label={getBadge()}
               variant="outlined"
             />
-          </div>
+          </div> */}
           <Button
             style={{
               color: 'black',
