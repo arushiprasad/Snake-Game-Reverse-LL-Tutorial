@@ -5,6 +5,8 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 import './Board.css';
 import {truncate} from 'fs';
@@ -216,12 +218,12 @@ const Board: React.FC = () => {
   };
 
   const getBadge = () => {
-    if (score <= 50) {
+    if (score <= 100) {
       return 'Beginner';
-    } else if (score <= 200) {
+    } else if (score <= 300) {
       return 'Mediocre';
     } else {
-      return 'Pro';
+      return 'Expert';
     }
   };
 
@@ -364,8 +366,12 @@ const Board: React.FC = () => {
             />
           </div>
           <Button
-            variant="outlined"
-            style={{color: 'black', borderColor: 'black', fontWeight: 'bold'}}
+            style={{
+              color: 'black',
+              borderColor: 'black',
+              fontWeight: 'bold',
+              fontSize: '1rem',
+            }}
             className="scoreButton">
             {`SCORE: ${score} / 1000`}
           </Button>
