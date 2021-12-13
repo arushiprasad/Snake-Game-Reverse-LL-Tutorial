@@ -394,7 +394,7 @@ const Board: React.FC = () => {
             ) : undefined}
           </div>{' '}
           {snakeBadgeOn ? (
-            <Tooltip title="You earned Snake Charmer Badge...">
+            <Tooltip title="You earned a badge! Check back on Louisa later for it!">
               <SnakeIcon />
             </Tooltip>
           ) : undefined}
