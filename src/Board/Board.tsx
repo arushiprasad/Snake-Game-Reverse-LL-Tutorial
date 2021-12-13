@@ -8,6 +8,8 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import {ReactComponent as SnakeIcon} from './Snake.svg';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 import './Board.css';
 import {truncate} from 'fs';
@@ -169,6 +171,7 @@ const Board: React.FC = () => {
 
   const [shouldStart, setShouldStart] = useState(false);
   const [numberOfGames, setNumberOfGames] = useState(0);
+  const [snakeBadgeOn, setSnakeBadgeOn] = useState(false);
 
   useEffect(() => {
     window.addEventListener('keydown', e => {
@@ -183,7 +186,9 @@ const Board: React.FC = () => {
   });
 
   useEffect(() => {
-    getBadge();
+    if (score >= 50) {
+      setSnakeBadgeOn(true);
+    }
   }, [score]);
 
   // `useInterval` is needed; you can't naively do `setInterval` in the
@@ -377,7 +382,6 @@ const Board: React.FC = () => {
             className="scoreButton">
             {`SCORE: ${score} / 1000`}
           </Button>
-          {score > 50 ? <SnakeIcon /> : undefined}
           <div className="iconStyle">
             {numberOfGames === 0 && !shouldStart ? (
               <PlayCircleFilledWhiteIcon
@@ -389,6 +393,11 @@ const Board: React.FC = () => {
               <ReplayIcon onClick={onClick} className="icon" fontSize="large" />
             ) : undefined}
           </div>{' '}
+          {snakeBadgeOn ? (
+            <Tooltip title="You earned Snake Charmer Badge...">
+              <SnakeIcon />
+            </Tooltip>
+          ) : undefined}
         </div>
       }
       <div className="board">

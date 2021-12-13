@@ -101,7 +101,7 @@
 
 .icon {
   color: black;
-  padding-left: 1rem;
+  padding: 0rem 1rem;
   transform: scale(1);
 }
 
