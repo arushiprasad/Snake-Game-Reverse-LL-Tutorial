@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 #Snakes
 
-!(C:\Users\Arushi\Downloads\snake.png)
+![](/assets/images/snake.png)
 
 ## Available Scripts
 
